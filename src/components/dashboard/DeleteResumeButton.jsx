@@ -15,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 export default function DeleteResumeButton({ resumeId, fileName }) {
   const router = useRouter();
@@ -38,7 +39,7 @@ export default function DeleteResumeButton({ resumeId, fileName }) {
       setOpen(false);
       router.refresh();
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setIsDeleting(false);
     }

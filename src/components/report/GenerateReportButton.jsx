@@ -31,7 +31,7 @@ export default function GenerateReportButton({ resumeId }) {
 
       router.refresh();
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setIsGenerating(false);
     }

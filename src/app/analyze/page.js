@@ -24,6 +24,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useUploadThing } from "@/lib/uploadthing";
+import { toast } from "sonner";
 
 export default function AnalyzePage() {
   const inputRef = useRef(null);
@@ -100,19 +101,17 @@ export default function AnalyzePage() {
     e.preventDefault();
 
     if (!targetRole.trim()) {
-      alert("Please enter target role");
+      toast.error("Please enter target role");
       return;
     }
 
     if (isUploading) {
-      alert("Please wait, resume is still uploading.");
+      toast.warning("Please wait, resume is still uploading.");
       return;
     }
 
     if (!uploadedFile) {
-      alert(
-        "Please select your resume PDF first. It will upload automatically.",
-      );
+      toast.error("Please select your resume PDF first.");
       return;
     }
 
@@ -142,7 +141,7 @@ export default function AnalyzePage() {
 
       router.push(`/report/${data.data._id}`);
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     } finally {
       setIsSubmitting(false);
     }
