@@ -48,6 +48,7 @@ export default function AutoGenerateReport({ resumeId }) {
 
         setProgress(100);
         setMessage("Report generated successfully!");
+        toast.success("AI report generated successfully");
 
         setTimeout(() => {
           router.refresh();
@@ -55,6 +56,7 @@ export default function AutoGenerateReport({ resumeId }) {
       } catch (error) {
         setStatus("failed");
         setMessage(error.message || "Something went wrong");
+        toast.error(error.message || "Report generation failed");
       } finally {
         if (progressTimer) clearInterval(progressTimer);
       }

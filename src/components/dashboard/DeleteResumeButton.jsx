@@ -36,6 +36,7 @@ export default function DeleteResumeButton({ resumeId, fileName }) {
         throw new Error(data.message || "Failed to delete resume");
       }
 
+      toast.success("Resume deleted successfully");
       setOpen(false);
       router.refresh();
     } catch (error) {

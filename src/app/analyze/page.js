@@ -53,6 +53,7 @@ export default function AnalyzePage() {
 
       if (!file) {
         setUploadError("Upload completed but file data missing.");
+        toast.error("Upload completed but file data missing.");
         return;
       }
 
@@ -65,12 +66,14 @@ export default function AnalyzePage() {
 
       setUploadedFile(fileData);
       setUploadProgress(100);
+      toast.success("Resume uploaded successfully");
     },
 
     onUploadError: (error) => {
       setUploadError(error.message || "Upload failed. Please try again.");
       setUploadProgress(0);
       setUploadedFile(null);
+      toast.error(message);
     },
   });
 
@@ -138,7 +141,7 @@ export default function AnalyzePage() {
       if (!res.ok) {
         throw new Error(data.message || "Failed to save resume");
       }
-
+      toast.success("Resume saved. Generating report...");
       router.push(`/report/${data.data._id}`);
     } catch (error) {
       toast.error(error.message);
