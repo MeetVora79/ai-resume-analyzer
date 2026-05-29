@@ -1,3 +1,4 @@
+import { auth } from "@clerk/nextjs/server";
 import { connectDB } from "@/lib/db";
 import Resume from "@/models/Resume";
 import Report from "@/models/Report";
@@ -11,6 +12,18 @@ export async function POST(req) {
   try {
     await connectDB();
 
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        { status: 401 },
+      );
+    }
+
     const { resumeId } = await req.json();
 
     if (!mongoose.Types.ObjectId.isValid(resumeId)) {
@@ -23,7 +36,10 @@ export async function POST(req) {
       );
     }
 
-    const resume = await Resume.findById(resumeId);
+    const resume = await Resume.findOne({
+      _id: resumeId,
+      userId,
+    });
 
     if (!resume) {
       return NextResponse.json(

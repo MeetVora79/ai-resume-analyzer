@@ -1,11 +1,8 @@
 import { createUploadthing } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { auth } from "@clerk/nextjs/server";
 
 const f = createUploadthing();
-
-const auth = () => {
-  return { id: "demo-user" };
-};
 
 export const ourFileRouter = {
   resumeUploader: f({
@@ -15,13 +12,25 @@ export const ourFileRouter = {
     },
   })
     .middleware(async () => {
-      const user = auth();
+      try {
+        const { userId } = await auth();
 
-      if (!user) {
-        throw new UploadThingError("Unauthorized");
+        console.log("UploadThing Clerk userId:", userId);
+
+        if (!userId) {
+          throw new UploadThingError("Unauthorized. Please login first.");
+        }
+
+        return {
+          userId,
+        };
+      } catch (error) {
+        console.error("UploadThing middleware error:", error);
+
+        throw new UploadThingError(
+          error.message || "Failed to authenticate upload request"
+        );
       }
-
-      return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       console.log("Upload complete for userId:", metadata.userId);

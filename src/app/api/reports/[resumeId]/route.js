@@ -1,3 +1,5 @@
+import { auth } from "@clerk/nextjs/server";
+import Resume from "@/models/Resume";
 import { connectDB } from "@/lib/db";
 import Report from "@/models/Report";
 import { NextResponse } from "next/server";
@@ -7,6 +9,18 @@ export async function GET(req, context) {
   try {
     await connectDB();
 
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorized",
+        },
+        { status: 401 },
+      );
+    }
+
     const { resumeId } = await context.params;
 
     if (!mongoose.Types.ObjectId.isValid(resumeId)) {
@@ -15,7 +29,22 @@ export async function GET(req, context) {
           success: false,
           message: "Invalid resume ID",
         },
-        { status: 400 }
+        { status: 400 },
+      );
+    }
+
+    const resume = await Resume.findOne({
+      _id: resumeId,
+      userId,
+    });
+
+    if (!resume) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Resume not found",
+        },
+        { status: 404 },
       );
     }
 
@@ -27,7 +56,7 @@ export async function GET(req, context) {
           success: false,
           message: "Report not found",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -43,7 +72,7 @@ export async function GET(req, context) {
         success: false,
         message: "Something went wrong while fetching report",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

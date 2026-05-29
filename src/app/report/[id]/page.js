@@ -20,41 +20,48 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { auth } from "@clerk/nextjs/server";
+import { redirect, notFound } from "next/navigation";
+import mongoose from "mongoose";
+import { connectDB } from "@/lib/db";
+import Resume from "@/models/Resume";
+import Report from "@/models/Report";
 
 async function getResume(id) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const { userId } = await auth();
 
-  const res = await fetch(`${baseUrl}/api/resumes/${id}`, {
-    cache: "no-store",
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || "Failed to fetch resume");
+  if (!userId) {
+    redirect("/sign-in");
   }
 
-  return data.data;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    notFound();
+  }
+
+  await connectDB();
+
+  const resume = await Resume.findOne({
+    _id: id,
+    userId,
+  }).lean();
+
+  if (!resume) {
+    notFound();
+  }
+
+  return JSON.parse(JSON.stringify(resume));
 }
 
 async function getReport(resumeId) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const report = await Report.findOne({
+    resumeId,
+  }).lean();
 
-  const res = await fetch(`${baseUrl}/api/reports/${resumeId}`, {
-    cache: "no-store",
-  });
-
-  if (res.status === 404) {
+  if (!report) {
     return null;
   }
 
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.message || "Failed to fetch report");
-  }
-
-  return data.data;
+  return JSON.parse(JSON.stringify(report));
 }
 
 function SectionList({ title, items = [], type = "default" }) {

@@ -1,6 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import Container from "./Container";
 import { Button } from "@/components/ui/button";
+import {
+  Show,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function Navbar() {
   return (
@@ -11,24 +19,48 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          <Link href="#features" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/#features"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             Features
           </Link>
-          <Link href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground">
+
+          <Link
+            href="/#how-it-works"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             How it works
           </Link>
-          <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-foreground">
-            Dashboard
-          </Link>
+
+          <Show when="signed-in">
+            <Link
+              href="/dashboard"
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              Dashboard
+            </Link>
+          </Show>
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" asChild>
-            <Link href="/login">Login</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/analyze">Analyze Resume</Link>
-          </Button>
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <Button variant="ghost">Login</Button>
+            </SignInButton>
+
+            <SignUpButton mode="modal">
+              <Button>Get Started</Button>
+            </SignUpButton>
+          </Show>
+
+          <Show when="signed-in">
+            <Button asChild>
+              <Link href="/analyze">Analyze Resume</Link>
+            </Button>
+
+            <UserButton />
+          </Show>
         </div>
       </Container>
     </header>
