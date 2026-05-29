@@ -1,3 +1,4 @@
+import DownloadReportButton from "@/components/report/DownloadReportButton";
 import AutoGenerateReport from "@/components/report/AutoGenerateReport";
 import Container from "@/components/shared/Container";
 import {
@@ -142,7 +143,7 @@ function SectionList({
           : "bg-primary";
 
   return (
-    <Card>
+    <Card className="print-card">
       <CardHeader>
         <div className="flex items-start gap-3">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
@@ -219,7 +220,7 @@ export default async function ReportPage({ params }) {
   const report = await getReport(id);
 
   return (
-    <section className="min-h-[80vh] bg-muted/40 py-10">
+    <section className="print-area min-h-[80vh] bg-muted/40 py-10">
       <Container>
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
@@ -237,15 +238,19 @@ export default async function ReportPage({ params }) {
               </p>
             </div>
 
-            <Button variant="outline" asChild>
-              <Link href="/analyze">Analyze Another Resume</Link>
-            </Button>
+            <div className="flex gap-3 no-print">
+              <DownloadReportButton />
+
+              <Button variant="outline" asChild>
+                <Link href="/analyze">Analyze Another Resume</Link>
+              </Button>
+            </div>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="space-y-6 lg:sticky lg:top-24 lg:col-span-1 lg:self-start">
               {report && (
-                <Card className="overflow-hidden p-0">
+                <Card className="print-card overflow-hidden p-0">
                   <CardHeader className="rounded-t-xl bg-muted/60 p-4">
                     <div className="flex items-center justify-between gap-3">
                       <div>
@@ -297,7 +302,7 @@ export default async function ReportPage({ params }) {
               )}
 
               {report?.jobMatchScore && resume.jobDescription && (
-                <Card className="overflow-hidden p-0">
+                <Card className="print-card overflow-hidden p-0">
                   <CardHeader className="rounded-t-xl bg-muted/60 p-6">
                     <div className="flex items-center justify-between gap-3">
                       <div>
@@ -336,7 +341,7 @@ export default async function ReportPage({ params }) {
                 </Card>
               )}
 
-              <Card>
+              <Card className="print-card">
                 <CardHeader>
                   <CardTitle>Resume Details</CardTitle>
                   <CardDescription>Uploaded resume information</CardDescription>
@@ -381,7 +386,11 @@ export default async function ReportPage({ params }) {
                     </div>
                   </div>
 
-                  <Button variant="outline" asChild className="w-full bg-black/20">
+                  <Button
+                    variant="outline"
+                    asChild
+                    className="w-full bg-black/20"
+                  >
                     <Link href={resume.fileUrl} target="_blank">
                       View Uploaded Resume
                     </Link>
@@ -395,7 +404,7 @@ export default async function ReportPage({ params }) {
                 <AutoGenerateReport resumeId={id} />
               ) : (
                 <>
-                  <Card className="overflow-hidden p-0">
+                  <Card className="print-card overflow-hidden p-0">
                     <CardHeader className="rounded-t-xl bg-muted/60 p-4">
                       <div className="flex items-start gap-4">
                         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-background">
@@ -419,7 +428,7 @@ export default async function ReportPage({ params }) {
                   </Card>
 
                   {resume.jobDescription && report.jobMatchScore && (
-                    <Card className="overflow-hidden p-0">
+                    <Card className="print-card overflow-hidden p-0">
                       <CardHeader className="rounded-t-xl bg-muted/60 p-6">
                         <div className="flex items-start gap-4">
                           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-background">

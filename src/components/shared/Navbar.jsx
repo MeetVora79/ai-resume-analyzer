@@ -3,14 +3,23 @@
 import Link from "next/link";
 import Container from "./Container";
 import { Button } from "@/components/ui/button";
-import {
-  Show,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
+
+  const navLinkClass = (href) =>
+    `text-sm transition ${
+      isActive(href)
+        ? "font-semibold text-foreground"
+        : "text-muted-foreground hover:text-foreground"
+    }`;
+
   return (
     <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
       <Container className="flex h-16 items-center justify-between">
@@ -20,14 +29,11 @@ export default function Navbar() {
 
         <nav className="hidden items-center gap-6 md:flex">
           <Show when="signed-in">
-            <Link
-              href="/dashboard"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
+            <Link href="/dashboard" className={navLinkClass("/dashboard")}>
               Dashboard
             </Link>
           </Show>
-          
+
           <Link
             href="/#features"
             className="text-sm text-muted-foreground hover:text-foreground"
@@ -55,7 +61,10 @@ export default function Navbar() {
           </Show>
 
           <Show when="signed-in">
-            <Button asChild>
+            <Button
+              asChild
+              variant={isActive("/analyze") ? "default" : "outline"}
+            >
               <Link href="/analyze">Analyze Resume</Link>
             </Button>
 
