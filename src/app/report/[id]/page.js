@@ -14,9 +14,16 @@ import {
   Target,
   Calendar,
   CheckCircle2,
-  AlertCircle,
   Sparkles,
   TrendingUp,
+  Trophy,
+  AlertTriangle,
+  Lightbulb,
+  BadgeCheck,
+  XCircle,
+  ListChecks,
+  Tags,
+  WandSparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -64,32 +71,142 @@ async function getReport(resumeId) {
   return JSON.parse(JSON.stringify(report));
 }
 
-function SectionList({ title, items = [], type = "default" }) {
+function getScoreLabel(score) {
+  if (score >= 85) return "Excellent";
+  if (score >= 70) return "Good";
+  if (score >= 50) return "Needs Work";
+  return "Poor";
+}
+
+function getScoreDescription(score) {
+  if (score >= 85) {
+    return "Your resume is strongly aligned with this role.";
+  }
+
+  if (score >= 70) {
+    return "Your resume is good, but a few improvements can make it stronger.";
+  }
+
+  if (score >= 50) {
+    return "Your resume has potential, but it needs important improvements.";
+  }
+
+  return "Your resume needs major improvements before applying.";
+}
+
+function getScoreBadgeVariant(score) {
+  if (score >= 70) return "default";
+  if (score >= 50) return "secondary";
+  return "destructive";
+}
+
+function getJobMatchLabel(score) {
+  if (score >= 85) return "Strong Match";
+  if (score >= 70) return "Good Match";
+  if (score >= 50) return "Partial Match";
+  return "Weak Match";
+}
+
+function getJobMatchDescription(score) {
+  if (score >= 85) {
+    return "Your resume aligns strongly with this job description.";
+  }
+
+  if (score >= 70) {
+    return "Your resume matches this job well, but some keywords can be improved.";
+  }
+
+  if (score >= 50) {
+    return "Your resume partially matches this job description.";
+  }
+
+  return "Your resume needs significant changes to match this job description.";
+}
+
+function SectionList({
+  title,
+  description,
+  items = [],
+  type = "default",
+  icon: Icon = ListChecks,
+}) {
   if (!items || items.length === 0) return null;
+
+  const colorClass =
+    type === "good"
+      ? "bg-green-500"
+      : type === "bad"
+        ? "bg-red-500"
+        : type === "warning"
+          ? "bg-yellow-500"
+          : "bg-primary";
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+            <Icon className="h-5 w-5 text-primary" />
+          </div>
+
+          <div>
+            <CardTitle className="text-lg">{title}</CardTitle>
+            {description && (
+              <CardDescription className="mt-1">{description}</CardDescription>
+            )}
+          </div>
+        </div>
       </CardHeader>
 
       <CardContent>
         <ul className="space-y-3">
           {items.map((item, index) => (
-            <li key={index} className="flex gap-3 text-sm">
+            <li
+              key={index}
+              className="flex gap-3 rounded-lg border bg-muted/30 p-3 text-sm leading-6"
+            >
               <span
-                className={`mt-1 h-2 w-2 shrink-0 rounded-full ${
-                  type === "good"
-                    ? "bg-green-500"
-                    : type === "bad"
-                      ? "bg-red-500"
-                      : "bg-primary"
-                }`}
+                className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${colorClass}`}
               />
-              <span className="text-muted-foreground">{item}</span>
+              <span className="min-w-0 break-words text-muted-foreground">
+                {item}
+              </span>
             </li>
           ))}
         </ul>
+      </CardContent>
+    </Card>
+  );
+}
+
+function KeywordBadges({ title, description, items = [], icon: Icon = Tags }) {
+  if (!items || items.length === 0) return null;
+
+  return (
+    <Card className="h-fit">
+      <CardHeader>
+        <div className="flex items-start gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-muted">
+            <Icon className="h-5 w-5 text-primary" />
+          </div>
+
+          <div>
+            <CardTitle className="text-md">{title}</CardTitle>
+            {description && (
+              <CardDescription className="mt-1">{description}</CardDescription>
+            )}
+          </div>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        <div className="flex flex-wrap gap-2">
+          {items.map((item, index) => (
+            <Badge key={index} variant="secondary" className="p-3 text-sm">
+              {item}
+            </Badge>
+          ))}
+        </div>
       </CardContent>
     </Card>
   );
@@ -102,7 +219,7 @@ export default async function ReportPage({ params }) {
   const report = await getReport(id);
 
   return (
-    <section className="min-h-[80vh] bg-muted/40 py-16">
+    <section className="min-h-[80vh] bg-muted/40 py-10">
       <Container>
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
@@ -126,7 +243,99 @@ export default async function ReportPage({ params }) {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            <div className="space-y-6 lg:col-span-1">
+            <div className="space-y-6 lg:sticky lg:top-24 lg:col-span-1 lg:self-start">
+              {report && (
+                <Card className="overflow-hidden p-0">
+                  <CardHeader className="rounded-t-xl bg-muted/60 p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <CardTitle>ATS Score</CardTitle>
+                        <CardDescription className="mt-1">
+                          Resume match score for your target role
+                        </CardDescription>
+                      </div>
+
+                      <Badge variant={getScoreBadgeVariant(report.atsScore)}>
+                        {getScoreLabel(report.atsScore)}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="p-6">
+                    <div className="mb-5 text-center">
+                      <div className="mx-auto mb-4 flex h-28 w-28 items-center justify-center rounded-full border-8 border-primary/20 bg-primary/10">
+                        <div>
+                          <p className="text-4xl font-bold">
+                            {report.atsScore}
+                          </p>
+                          <p className="text-xs text-muted-foreground">/100</p>
+                        </div>
+                      </div>
+
+                      <p className="font-medium">
+                        {getScoreDescription(report.atsScore)}
+                      </p>
+                    </div>
+
+                    <Progress value={report.atsScore} />
+
+                    <div className="mt-5 grid grid-cols-2 gap-3 text-center text-sm">
+                      <div className="rounded-xl border bg-muted/40 p-3">
+                        <p className="text-muted-foreground">Target Role</p>
+                        <p className="mt-1 font-medium">{resume.targetRole}</p>
+                      </div>
+
+                      <div className="rounded-xl border bg-muted/40 p-3">
+                        <p className="text-muted-foreground">Status</p>
+                        <p className="mt-1 font-medium capitalize">
+                          {resume.status}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {report?.jobMatchScore && resume.jobDescription && (
+                <Card className="overflow-hidden p-0">
+                  <CardHeader className="rounded-t-xl bg-muted/60 p-6">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <CardTitle>Job Match Score</CardTitle>
+                        <CardDescription className="mt-1">
+                          Resume match against pasted job description
+                        </CardDescription>
+                      </div>
+
+                      <Badge
+                        variant={getScoreBadgeVariant(report.jobMatchScore)}
+                      >
+                        {getJobMatchLabel(report.jobMatchScore)}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+
+                  <CardContent className="p-6">
+                    <div className="mb-5 text-center">
+                      <div className="mx-auto mb-4 flex h-28 w-28 items-center justify-center rounded-full border-8 border-primary/20 bg-primary/10">
+                        <div>
+                          <p className="text-4xl font-bold">
+                            {report.jobMatchScore}
+                          </p>
+                          <p className="text-xs text-muted-foreground">/100</p>
+                        </div>
+                      </div>
+
+                      <p className="font-medium">
+                        {getJobMatchDescription(report.jobMatchScore)}
+                      </p>
+                    </div>
+
+                    <Progress value={report.jobMatchScore} />
+                  </CardContent>
+                </Card>
+              )}
+
               <Card>
                 <CardHeader>
                   <CardTitle>Resume Details</CardTitle>
@@ -172,44 +381,13 @@ export default async function ReportPage({ params }) {
                     </div>
                   </div>
 
-                  <Button variant="outline" asChild className="w-full">
+                  <Button variant="outline" asChild className="w-full bg-black/20">
                     <Link href={resume.fileUrl} target="_blank">
                       View Uploaded Resume
                     </Link>
                   </Button>
                 </CardContent>
               </Card>
-
-              {report && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>ATS Score</CardTitle>
-                    <CardDescription>
-                      Resume match score for your target role
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent>
-                    <div className="mb-4 flex items-end gap-2">
-                      <span className="text-5xl font-bold">
-                        {report.atsScore}
-                      </span>
-                      <span className="mb-1 text-muted-foreground">/100</span>
-                    </div>
-
-                    <Progress value={report.atsScore} />
-
-                    <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-                      <TrendingUp className="h-4 w-4" />
-                      {report.atsScore >= 80
-                        ? "Strong resume for this role"
-                        : report.atsScore >= 60
-                          ? "Good but needs improvements"
-                          : "Needs major improvements"}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
             </div>
 
             <div className="space-y-6 lg:col-span-2">
@@ -217,55 +395,161 @@ export default async function ReportPage({ params }) {
                 <AutoGenerateReport resumeId={id} />
               ) : (
                 <>
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Summary</CardTitle>
-                      <CardDescription>AI-generated overview</CardDescription>
+                  <Card className="overflow-hidden p-0">
+                    <CardHeader className="rounded-t-xl bg-muted/60 p-4">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-background">
+                          <Sparkles className="h-6 w-6 text-primary" />
+                        </div>
+
+                        <div>
+                          <CardTitle>AI Summary</CardTitle>
+                          <CardDescription className="mt-1">
+                            Recruiter-style overview of your resume
+                          </CardDescription>
+                        </div>
+                      </div>
                     </CardHeader>
 
-                    <CardContent>
-                      <p className="text-muted-foreground">{report.summary}</p>
+                    <CardContent className="px-6 py-4">
+                      <p className="leading-8 text-muted-foreground">
+                        {report.summary}
+                      </p>
                     </CardContent>
                   </Card>
 
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <SectionList
-                      title="Strengths"
-                      items={report.strengths}
-                      type="good"
-                    />
-                    <SectionList
-                      title="Weaknesses"
-                      items={report.weaknesses}
-                      type="bad"
-                    />
-                  </div>
+                  {resume.jobDescription && report.jobMatchScore && (
+                    <Card className="overflow-hidden p-0">
+                      <CardHeader className="rounded-t-xl bg-muted/60 p-6">
+                        <div className="flex items-start gap-4">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-background">
+                            <Target className="h-6 w-6 text-primary" />
+                          </div>
 
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <SectionList
-                      title="Missing Skills"
-                      items={report.missingSkills}
-                    />
-                    <SectionList
-                      title="Recommended Keywords"
-                      items={report.recommendedKeywords}
-                    />
-                  </div>
+                          <div>
+                            <CardTitle>Job Description Match</CardTitle>
+                            <CardDescription className="mt-1">
+                              How well your resume matches the pasted job
+                              description
+                            </CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
 
-                  <SectionList
-                    title="Improvement Suggestions"
-                    items={report.suggestions}
+                      <CardContent className="space-y-6 p-8">
+                        <div>
+                          <div className="mb-2 flex items-center justify-between">
+                            <p className="font-medium">Match Score</p>
+                            <Badge
+                              variant={getScoreBadgeVariant(
+                                report.jobMatchScore,
+                              )}
+                            >
+                              {report.jobMatchScore}/100
+                            </Badge>
+                          </div>
+
+                          <Progress value={report.jobMatchScore} />
+
+                          <p className="mt-3 text-sm text-muted-foreground">
+                            {getJobMatchDescription(report.jobMatchScore)}
+                          </p>
+                        </div>
+
+                        <div className="rounded-xl border bg-muted/30 p-4">
+                          <p className="mb-3 font-medium">Matching Skills</p>
+
+                          {report.matchingSkills?.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                              {report.matchingSkills.map((skill, index) => (
+                                <Badge
+                                  key={index}
+                                  variant="secondary"
+                                  className="p-3"
+                                >
+                                  {skill}
+                                </Badge>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">
+                              No matching skills detected.
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="rounded-xl border bg-muted/30 p-4">
+                          <p className="mb-3 font-medium">
+                            Missing JD Keywords
+                          </p>
+
+                          {report.missingKeywordsFromJD?.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                              {report.missingKeywordsFromJD.map(
+                                (keyword, index) => (
+                                  <Badge
+                                    key={index}
+                                    variant="outline"
+                                    className="max-w-full whitespace-normal p-3"
+                                  >
+                                    {keyword}
+                                  </Badge>
+                                ),
+                              )}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-muted-foreground">
+                              No major missing job keywords detected.
+                            </p>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  <KeywordBadges
+                    title="Missing Skills"
+                    description="Technical skills or tools missing from your resume"
+                    items={report.missingSkills}
+                    icon={AlertTriangle}
+                  />
+
+                  <KeywordBadges
+                    title="Recommended Keywords"
+                    description="Keywords to improve ATS visibility"
+                    items={report.recommendedKeywords}
+                    icon={Tags}
                   />
 
                   <SectionList
+                    title="Priority Improvements"
+                    description="Apply these changes first to improve your score"
+                    items={report.suggestions}
+                    icon={Lightbulb}
+                  />
+
+                  {resume.jobDescription && (
+                    <SectionList
+                      title="Job-specific Suggestions"
+                      description="Suggestions based on the pasted job description"
+                      items={report.jobSpecificSuggestions}
+                      icon={Target}
+                    />
+                  )}
+
+                  <SectionList
                     title="Project Suggestions"
+                    description="Projects that can strengthen your profile"
                     items={report.projectSuggestions}
+                    icon={WandSparkles}
                   />
 
                   <SectionList
                     title="Formatting Issues"
+                    description="Issues that may hurt ATS parsing or recruiter readability"
                     items={report.formattingIssues}
                     type="bad"
+                    icon={AlertTriangle}
                   />
                 </>
               )}

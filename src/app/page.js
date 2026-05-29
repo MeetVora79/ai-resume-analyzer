@@ -18,7 +18,7 @@ const features = [
   {
     icon: Brain,
     title: "AI Suggestions",
-    description: "Get role-based improvement suggestions using Gemini AI.",
+    description: "Get role-based improvement suggestions using AI.",
   },
   {
     icon: ShieldCheck,

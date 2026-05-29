@@ -7,6 +7,8 @@ import { z } from "zod";
 const createResumeSchema = z.object({
   targetRole: z.string().min(2, "Target role is required"),
 
+  jobDescription: z.string().optional(),
+
   fileName: z.string().min(1, "File name is required"),
 
   fileUrl: z.string().url("Valid file URL is required"),
@@ -39,6 +41,7 @@ export async function POST(req) {
     const resume = await Resume.create({
       userId,
       targetRole: validatedData.targetRole,
+      jobDescription: validatedData.jobDescription || "",
       fileName: validatedData.fileName,
       fileUrl: validatedData.fileUrl,
       fileKey: validatedData.fileKey,

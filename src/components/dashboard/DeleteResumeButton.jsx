@@ -47,7 +47,7 @@ export default function DeleteResumeButton({ resumeId, fileName }) {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="destructive" size="sm">
+        <Button type="button" variant="destructive" size="sm" className="hover:cursor-pointer">
           <Trash2 className="mr-2 h-4 w-4" />
           Delete
         </Button>

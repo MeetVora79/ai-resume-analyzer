@@ -99,7 +99,7 @@ export default function AutoGenerateReport({ resumeId }) {
           Generating AI Analysis
         </CardTitle>
         <CardDescription>
-          Please wait while Gemini AI reviews your resume.
+          Please wait while AI reviews your resume.
         </CardDescription>
       </CardHeader>
 

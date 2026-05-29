@@ -12,6 +12,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -28,6 +29,7 @@ export default function AnalyzePage() {
   const inputRef = useRef(null);
   const router = useRouter();
   const [targetRole, setTargetRole] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -124,6 +126,7 @@ export default function AnalyzePage() {
         },
         body: JSON.stringify({
           targetRole,
+          jobDescription,
           fileName: uploadedFile.name,
           fileUrl: uploadedFile.url,
           fileKey: uploadedFile.key,
@@ -183,6 +186,23 @@ export default function AnalyzePage() {
                     onChange={(e) => setTargetRole(e.target.value)}
                     placeholder="Example: React.js Developer, MERN Stack Developer"
                   />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="jobDescription">
+                    Job Description<span className="text-muted-foreground">(Optional)</span>
+                  </Label>
+                  <Textarea
+                    id="jobDescription"
+                    value={jobDescription}
+                    onChange={(e) => setJobDescription(e.target.value)}
+                    placeholder="Paste job description here to get resume vs job match analysis..."
+                    className="min-h-36 resize-none"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Optional, but recommended. If added, AI will compare your
+                    resume directly with this job description.
+                  </p>
                 </div>
 
                 <div className="space-y-3">
@@ -280,7 +300,7 @@ export default function AnalyzePage() {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full"
+                  className="w-full hover:cursor-pointer"
                   disabled={isSubmitting || isUploading || !uploadedFile}
                 >
                   {isSubmitting

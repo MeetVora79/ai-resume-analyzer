@@ -15,6 +15,13 @@ const ReportSchema = new mongoose.Schema(
       max: 100,
     },
 
+    jobMatchScore: {
+      type: Number,
+      required: false,
+      min: 0,
+      max: 100,
+    },
+
     summary: {
       type: String,
       required: true,
@@ -40,7 +47,22 @@ const ReportSchema = new mongoose.Schema(
       default: [],
     },
 
+    matchingSkills: {
+      type: [String],
+      default: [],
+    },
+
+    missingKeywordsFromJD: {
+      type: [String],
+      default: [],
+    },
+
     suggestions: {
+      type: [String],
+      default: [],
+    },
+
+    jobSpecificSuggestions: {
       type: [String],
       default: [],
     },

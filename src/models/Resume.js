@@ -34,13 +34,19 @@ const ResumeSchema = new mongoose.Schema(
       trim: true,
     },
 
+    jobDescription: {
+      type: String,
+      required: false,
+      trim: true,
+    },
+
     status: {
       type: String,
       enum: ["uploaded", "analyzing", "completed", "failed"],
       default: "uploaded",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Resume = mongoose.models.Resume || mongoose.model("Resume", ResumeSchema);

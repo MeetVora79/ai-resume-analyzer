@@ -19,6 +19,15 @@ export default function Navbar() {
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
+          <Show when="signed-in">
+            <Link
+              href="/dashboard"
+              className="text-sm text-muted-foreground hover:text-foreground"
+            >
+              Dashboard
+            </Link>
+          </Show>
+          
           <Link
             href="/#features"
             className="text-sm text-muted-foreground hover:text-foreground"
@@ -32,15 +41,6 @@ export default function Navbar() {
           >
             How it works
           </Link>
-
-          <Show when="signed-in">
-            <Link
-              href="/dashboard"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              Dashboard
-            </Link>
-          </Show>
         </nav>
 
         <div className="flex items-center gap-3">

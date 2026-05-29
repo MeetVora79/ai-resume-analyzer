@@ -98,11 +98,16 @@ export async function POST(req) {
     const aiResult = await analyzeResumeWithGemini({
       pdfBuffer: buffer,
       targetRole: resume.targetRole,
+      jobDescription: resume.jobDescription || "",
     });
 
     const report = await Report.create({
       resumeId: resume._id,
       atsScore: aiResult.atsScore,
+      jobMatchScore: aiResult.jobMatchScore || aiResult.atsScore,
+      matchingSkills: aiResult.matchingSkills || [],
+      missingKeywordsFromJD: aiResult.missingKeywordsFromJD || [],
+      jobSpecificSuggestions: aiResult.jobSpecificSuggestions || [],
       summary: aiResult.summary,
       strengths: aiResult.strengths || [],
       weaknesses: aiResult.weaknesses || [],

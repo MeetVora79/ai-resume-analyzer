@@ -1,7 +1,12 @@
+import { Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
+
+const geist = Geist({
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "ResumeAI - AI Resume Analyzer",
@@ -12,7 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
       <html lang="en">
-        <body>
+        <body className={geist.className}>
           <Navbar />
           <main>{children}</main>
           <Footer />
