@@ -12,6 +12,11 @@ const geist = Geist({
 export const metadata = {
   title: "ResumeAI - AI Resume Analyzer",
   description: "Analyze your resume with AI and improve your ATS score.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
