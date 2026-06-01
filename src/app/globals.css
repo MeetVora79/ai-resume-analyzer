@@ -129,6 +129,10 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @media print {
   header,
   footer,
