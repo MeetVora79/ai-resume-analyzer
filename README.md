@@ -216,14 +216,6 @@ Allow production domain in UploadThing if required
 Test login, upload, analysis, dashboard, and report pages
 ```
 
-## Future Improvements
-
-- Dark/light mode toggle
-- Mobile navbar
-- Resume improvement rewrite suggestions
-- Email report sharing
-- Stripe-based premium plan
-
 ## Author
 
 Meet Vora
