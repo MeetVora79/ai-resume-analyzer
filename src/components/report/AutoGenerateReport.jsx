@@ -6,6 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+
 
 export default function AutoGenerateReport({ resumeId }) {
   const router = useRouter();

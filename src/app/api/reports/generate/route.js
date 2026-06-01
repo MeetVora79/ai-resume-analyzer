@@ -130,11 +130,25 @@ export async function POST(req) {
   } catch (error) {
     console.error("Generate report error:", error);
 
+    try {
+      const body = await req.json().catch(() => null);
+
+      if (body?.resumeId && mongoose.Types.ObjectId.isValid(body.resumeId)) {
+        await Resume.findByIdAndUpdate(body.resumeId, {
+          status: "failed",
+        });
+      }
+    } catch (statusError) {
+      console.error("Failed to update resume status:", statusError);
+    }
+
     let message = "Something went wrong while generating report";
 
     if (
       error.message?.includes("503") ||
-      error.message?.includes("UNAVAILABLE")
+      error.message?.includes("UNAVAILABLE") ||
+      error.message?.includes("high demand") ||
+      error.message?.includes("overloaded")
     ) {
       message =
         "AI service is currently busy. Please wait a moment and try again.";
