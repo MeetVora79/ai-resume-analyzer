@@ -133,6 +133,10 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id] {
+  scroll-margin-top: 96px;
+}
+
 @media print {
   header,
   footer,

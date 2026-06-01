@@ -83,27 +83,27 @@ export default function HomePage() {
       <section className="relative border-b">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,hsl(var(--primary)/0.18),transparent_35%),radial-gradient(circle_at_bottom_left,hsl(var(--primary)/0.10),transparent_28%)]" />
 
-        <Container className="flex min-h-[calc(100vh-4rem)] items-center justify-center py-16 lg:py-20">
+        <Container className="flex min-h-[86vh] items-center justify-center px-4 py-12 sm:py-14 lg:min-h-[calc(100vh-4rem)] lg:py-20">
           <div className="mx-auto max-w-5xl text-center">
             <div className="mb-6 inline-flex items-center rounded-full border bg-background/80 px-4 py-2 text-sm text-muted-foreground shadow-sm backdrop-blur">
               <Sparkles className="mr-2 h-4 w-4 text-primary" />
               AI-powered resume improvement platform
             </div>
 
-            <h1 className="mx-auto max-w-5xl text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="mx-auto max-w-5xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
               Build a resume that gets{" "}
               <span className="bg-gradient-to-r from-primary via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
                 noticed by recruiters
               </span>
             </h1>
 
-            <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-muted-foreground sm:text-lg">
+            <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
               ResumeAI analyzes your resume, calculates ATS score, compares it
               with job descriptions, and gives practical suggestions to improve
               your chances of getting shortlisted.
             </p>
 
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+            <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row sm:gap-4">
               <Button size="lg" asChild>
                 <Link href="/analyze">
                   Analyze Resume
@@ -165,7 +165,7 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="py-20 sm:py-24">
+      <section id="features" className="scroll-mt-24 py-16 sm:py-20 lg:py-24">
         <Container>
           <div className="mx-auto mb-14 max-w-2xl text-center">
             <div className="mb-4 inline-flex rounded-full border px-4 py-2 text-sm text-muted-foreground">
@@ -183,7 +183,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
             {features.map((feature) => {
               const Icon = feature.icon;
 
@@ -192,8 +192,8 @@ export default function HomePage() {
                   key={feature.title}
                   className="group rounded-2xl transition hover:-translate-y-1 hover:shadow-xl"
                 >
-                  <CardContent className="p-6">
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition group-hover:bg-primary group-hover:text-primary-foreground">
+                  <CardContent className="p-5 sm:p-6">
+                    <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 transition group-hover:bg-primary group-hover:text-primary-foreground sm:h-12 sm:w-12">
                       <Icon className="h-6 w-6" />
                     </div>
 
@@ -211,7 +211,10 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="bg-muted/30 py-20 sm:py-24">
+      <section
+        id="how-it-works"
+        className="scroll-mt-24 bg-muted/30 py-16 sm:py-20 lg:py-24"
+      >
         <Container>
           <div className="mx-auto mb-14 max-w-2xl text-center">
             <div className="mb-4 inline-flex rounded-full border bg-background px-4 py-2 text-sm text-muted-foreground">
@@ -260,7 +263,7 @@ export default function HomePage() {
       </section>
 
       {/* Highlight Section */}
-      <section id="job-match" className="py-20 sm:py-24">
+      <section id="job-match" className="scroll-mt-24 py-16 sm:py-20 lg:py-24">
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>

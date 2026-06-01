@@ -63,7 +63,7 @@ function FooterLink({ href, children }) {
 export default function Footer() {
   return (
     <footer className="border-t bg-muted/30">
-      <Container className="py-12 sm:pt-16 sm:pb-12">
+      <Container className="px-4 py-10 sm:px-6 sm:pt-16 sm:pb-12">
         <div className="grid gap-10 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-2">
@@ -84,21 +84,21 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border bg-background p-4">
+              <div className="rounded-2xl border bg-background p-4 sm:p-5">
                 <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
                   <Upload className="h-4 w-4 text-primary" />
                 </div>
                 <p className="text-sm font-medium">Secure Upload</p>
               </div>
 
-              <div className="rounded-2xl border bg-background p-4">
+              <div className="rounded-2xl border bg-background p-4 sm:p-5">
                 <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
                   <BarChart3 className="h-4 w-4 text-primary" />
                 </div>
                 <p className="text-sm font-medium">ATS Insights</p>
               </div>
 
-              <div className="rounded-2xl border bg-background p-4">
+              <div className="rounded-2xl border bg-background p-4 sm:p-5">
                 <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
                   <ShieldCheck className="h-4 w-4 text-primary" />
                 </div>

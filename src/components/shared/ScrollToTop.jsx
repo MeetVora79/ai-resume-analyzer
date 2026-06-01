@@ -45,7 +45,7 @@ export default function ScrollToTop() {
       type="button"
       size="icon"
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 z-50 h-11 w-11 rounded-full shadow-lg transition hover:-translate-y-1"
+      className="fixed bottom-5 right-5 z-50 h-10 w-10 rounded-full shadow-lg transition hover:-translate-y-1 sm:bottom-6 sm:right-6 sm:h-11 sm:w-11 hidden sm:inline-flex"
       aria-label="Scroll to top"
     >
       <ArrowUp className="h-5 w-5" />
