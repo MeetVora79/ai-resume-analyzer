@@ -83,7 +83,7 @@ export default function Footer() {
               practical improvement suggestions.
             </p>
 
-            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="hidden mt-6 sm:grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border bg-background p-4 sm:p-5">
                 <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
                   <Upload className="h-4 w-4 text-primary" />

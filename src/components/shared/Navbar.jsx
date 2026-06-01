@@ -105,7 +105,7 @@ export default function Navbar() {
     }`;
 
   const closeMobileMenu = () => {
-    setOpen(false);
+    setOpen(false); 
   };
 
   return (

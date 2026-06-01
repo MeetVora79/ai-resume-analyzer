@@ -10,7 +10,7 @@ export default function DownloadReportButton() {
 
   return (
     <Button variant="outline" onClick={handleDownload} className="no-print hover:cursor-pointer">
-      <Download className="mr-2 h-4 w-4" />
+      <Download className="mr-1 h-4 w-4" />
       Download PDF
     </Button>
   );
