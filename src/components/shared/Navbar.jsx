@@ -123,6 +123,15 @@ export default function Navbar() {
 
         {/* Desktop Links */}
         <nav className="hidden items-center gap-7 md:flex">
+          {isSignedIn && (
+            <Link
+              href="/dashboard"
+              className={linkClass(isActivePath("/dashboard"))}
+            >
+              Dashboard
+            </Link>
+          )}
+          
           {publicLinks.map((link) => (
             <SectionLink
               key={link.href}
@@ -133,15 +142,6 @@ export default function Navbar() {
               {link.label}
             </SectionLink>
           ))}
-
-          {isSignedIn && (
-            <Link
-              href="/dashboard"
-              className={linkClass(isActivePath("/dashboard"))}
-            >
-              Dashboard
-            </Link>
-          )}
         </nav>
 
         {/* Desktop Auth */}
