@@ -130,11 +130,26 @@ export async function POST(req) {
   } catch (error) {
     console.error("Generate report error:", error);
 
+    let message = "Something went wrong while generating report";
+
+    if (
+      error.message?.includes("503") ||
+      error.message?.includes("UNAVAILABLE")
+    ) {
+      message =
+        "AI service is currently busy. Please wait a moment and try again.";
+    } else if (error.message?.includes("429")) {
+      message = "AI usage limit reached. Please try again after some time.";
+    } else if (error.message?.includes("GEMINI_API_KEY")) {
+      message = "AI configuration is missing. Please contact support.";
+    } else if (error.message) {
+      message = error.message;
+    }
+
     return NextResponse.json(
       {
         success: false,
-        message:
-          error.message || "Something went wrong while generating report",
+        message,
       },
       { status: 500 },
     );
