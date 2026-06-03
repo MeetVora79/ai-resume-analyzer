@@ -137,24 +137,24 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="border-b bg-muted/30 py-10">
+      <section className="border-b bg-muted/10 py-10">
         <Container>
           <div className="grid gap-6 text-center sm:grid-cols-3">
-            <div>
+            <div className="rounded-2xl border border-gray-300 p-6">
               <p className="text-3xl font-bold">ATS</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Role-based resume scoring
               </p>
             </div>
 
-            <div>
+            <div className="rounded-2xl border border-gray-300 p-6">
               <p className="text-3xl font-bold">JD Match</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Resume vs job description comparison
               </p>
             </div>
 
-            <div>
+            <div className="rounded-2xl border border-gray-300 p-6">
               <p className="text-3xl font-bold">AI Tips</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Practical suggestions to improve resume
